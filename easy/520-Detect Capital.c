@@ -19,14 +19,26 @@ bool detectCapitalUse(char *word){
     char ch = word[counter];
     int max = 0;
     int min = 0;
-    if ((ch >= 'A') && (ch <= 'Z')){
-        max = 'Z';
-        min = 'A';
+    int flag = 1;
+    if ((ch >= 'a') && (ch <= 'z')){
+        max = 'z';
+        min = 'a';
+        flag = 0;
     }
+    ch = word[++counter];
     while(ch != '\0'){
-        if ((ch >= 'a') && (ch <= 'z') && max == 0){
-            max = 'z';
-            min = 'a';
+        if (flag == 1){
+            if ((ch >= 'a') && (ch <= 'z')){
+                max = 'z';
+                min = 'a';
+            }else{
+                max = 'Z';
+                min = 'A';
+            }
+        }else{
+            if ((ch <= min) || (ch >= max)){
+                return false;
+            }
         }
         ch = word[++counter];
         while(ch != '\0'){
