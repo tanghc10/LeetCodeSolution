@@ -10,43 +10,34 @@ void main(void){
 int arrayPairSum(int *nums, int numsSize){
     int i, j;
     int result = 0;
-    quick_sort(nums, 0, numsSize);
-    for(i = 0; i < numsSize; i++){
-        printf("%d ", nums[i]);
-    }
+    quick_sort(nums, 0, numsSize-1);
     for(i = 0; i < numsSize; i = i+2){
         result += nums[i];
     }
     return result;
 }
 
-void quick_sort(int *nums, int start, int end){
-    int pos;
-    if (start < end){
-        pos = partition(nums, start, end);
-        quick_sort(nums, start, pos-1);
-        quick_sort(nums, pos+1, end);
-    }
-    return;
-}
+void quick_sort(int s[], int l, int r)
+{
+    if (l < r)
+    {
+        //Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+        int i = l, j = r, x = s[l];
+        while (i < j)
+        {
+            while(i < j && s[j] >= x) // 从右向左找第一个小于x的数
+                j--;
+            if(i < j)
+                s[i++] = s[j];
 
-int partition(int *nums, int low, int high){
-    int key = nums[low];
-    while(low < high){
-        while(low < high && nums[high] >= key){
-            high--;
+            while(i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+                i++;
+            if(i < j)
+                s[j--] = s[i];
         }
-        if(low < high){
-            nums[low++] = nums[high];
-        }
-        while(low < high && nums[high] <= key){
-            low++;
-        }
-        if(low < high){
-            nums[high--] = nums[low];
-        }
+        s[i] = x;
+        quick_sort(s, l, i - 1); // 递归调用
+        quick_sort(s, i + 1, r);
     }
-    nums[low] = key;
-    return low;
 }
 
